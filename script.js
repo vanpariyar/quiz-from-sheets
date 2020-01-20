@@ -46,6 +46,7 @@ $(document).ready(function(){
         }
     }
     var quiz = getItem(1);
+    
     function quizSetup(questionIndex){
         if(quiz[questionIndex].question == "undefined"){
             return false;
