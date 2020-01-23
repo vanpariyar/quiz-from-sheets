@@ -67,6 +67,8 @@ $(document).ready(function(){
 
         if(!getItem(1)){
             $.getJSON( scriptURL, function( data ) {
+                return data;
+            }).then(function(data){
                 setItem(1, data);
             });
         }
