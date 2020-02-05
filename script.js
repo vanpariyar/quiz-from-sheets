@@ -45,12 +45,14 @@ $(document).ready(function(){
                 return false;   
         }
     }
-    var quiz = getItem(1);
+    
     
     function quizSetup(questionIndex){
+        var quiz = getItem(1);
         if(quiz[questionIndex].question == "undefined"){
             return false;
         }
+        
         $("#question").text( quiz[questionIndex].question );
         $("label[for='radio1'] span").text(quiz[questionIndex].answer1);
         $("label[for='radio2'] span").text(quiz[questionIndex].answer2);
@@ -65,13 +67,21 @@ $(document).ready(function(){
 
         // NOTE : Remove this if condiotion if found it is for testing purpose
 
+        function getQuizJson(argument) {
+            // body...
+        
         if(!getItem(1)){
+            $.ajaxSetup({
+                async: false
+            });
             $.getJSON( scriptURL, function( data ) {
-                return data;
-            }).then(function(data){
                 setItem(1, data);
+                return data;
             });
         }
+
+        }
+        getQuizJson();
         
     } else {
     // Sorry! No Web Storage support..
@@ -79,6 +89,8 @@ $(document).ready(function(){
 
     var rightAnswer = [];
     var userAnswer = [];
+    
+    var quiz = getItem(1);
     quiz.map(function(value){
         rightAnswer.push(value.RightAnswer);
     });
