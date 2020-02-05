@@ -66,10 +66,6 @@ $(document).ready(function(){
     if (typeof(Storage) !== "undefined") {
 
         // NOTE : Remove this if condiotion if found it is for testing purpose
-
-        function getQuizJson(argument) {
-            // body...
-        
         if(!getItem(1)){
             $.ajaxSetup({
                 async: false
@@ -79,9 +75,6 @@ $(document).ready(function(){
                 return data;
             });
         }
-
-        }
-        getQuizJson();
         
     } else {
     // Sorry! No Web Storage support..
@@ -97,7 +90,7 @@ $(document).ready(function(){
     var questionIndex = getItem(2);
     quizSetup(questionIndex);
     $('.ansBtn').click(function(e){
-        userAnswer[questionIndex+1] = (parseInt($('input[name="optradio"]:checked').val()));
+        userAnswer[questionIndex] = (parseInt($('input[name="optradio"]:checked').val()));
         questionIndex = getItem(2);
         console.log(rightAnswer.length);
         console.log(questionIndex);
@@ -106,4 +99,5 @@ $(document).ready(function(){
             quizSetup(questionIndex+1);
         }
     });
+    
 });
