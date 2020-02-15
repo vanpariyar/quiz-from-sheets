@@ -52,13 +52,13 @@
 			<div class="col-sm-4">
 				<div class="card" style="width:auto">
 					<img class="card-img-top" src="https://lh3.googleusercontent.com/twN6CGQLGe7l8BPa_4-1qkZ7FWL5CRUmQVHLymmNIxqNy8pxqeCeU8HJkLSWPEO7ZGbF8Cs3O5G-0kSaLNFXp555H0qdT4vYcqYflNzL0ZCNzcm35ktQkoKEAxSakQ_IS1-ynQuakqmHtTpYE-4cpPUFXccHmXKnF3K3bw1PQGPxU8nlF-DyxznbuV2G_NqGq8L8l-MPlwA1TUOghEECUAS9Qp3mAWEeqmpQ5J15cHiedQRYlQrS4hR-Z5lebT_Ofj3Ji6-_FWHK-04rpUSu8bB9ekTuzpX3vIRCzEfe37enk4rwbSb-hAEc9ymsmxG5PkGQwY-KJnnsRgRW-y9hLZCKLOxcwob_LGPZOwX_6oTUKnjqOX32xRNjkW5B4HKp8TlFtRdK6lFQJBr4LyHCFquZ6LVu-EsMwNGKnO7Bd4elTOW9ZAZfbfBCoSb9mK8nk0RYrzO3dQ61N_iDiN3JHGl5f902k2EhD5so2PvwqhnQ_MHeR9DGswNTWJI-ZYKzHWq9TqnHvjTQJ1D5cDb-zJmDtqfMKGMjuEeoH09wHX1nRzTGtnOE1DBzIgtL1_Fxj4cE_kbCwLrhSecKJP7qu_8WwaBVTrsf4mazYNGF6PaGds8NrpHoNMJG9eF2o0FP_efA71VMWNdHSiOu-ZwEdXaF2pwh3woUwGkCrZcdlP_4mtAIlEfA9Y8hB0tXY7cIhAp_O-nAk3mMD_isaZ9Qo0grefnfYIR59HXwLcZI6rQREcVQMg=w353-h539-no" alt="Card image" >
-					<div class="card-body quiz-body" style="/*display: none*/">
+					<div class="card-body text-center quiz-body" style="display: none;">
 						<h4 class="card-title">Questions</h4>
 						<p class="card-text" id="question">Some example text some example text. John Doe is an architect and engineer</p>
-						<form action="">
+						<form id="quiz-form" action="">
 							<div class="form-check-inline">
 							  <label class="form-check-label" for="radio1">
-								<input type="radio" class="form-check-input" id="radio1" name="optradio" value="1" checked> <span>Option 1</span> 
+								<input type="radio" class="form-check-input" id="radio1" name="optradio" value="1" required> <span>Option 1</span> 
 							  </label>
 							</div>
 							<div class="form-check-inline">
@@ -78,14 +78,26 @@
 								</label>
 							  </div>
 							<br>
-							<button type="submit" class="ansBtn btn btn-primary">Submit</button>
+							<!-- <button class="btn btn-primary prev">Prev</button> -->
+							<button type="submit" class="ansBtn mt-2 btn btn-primary" value="-1">Submit</button>
+							<!-- <button class="btn btn-primary next">Next</button> -->
 						</form>
 					</div>
 				</div>
-				<div class="d-flex justify-content-center mt-5 quiz-loader">
-				  <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-				    <span class="sr-only">Loading...</span>
-				  </div>
+				<div id="rules">
+					<p>Rules</p>
+					<ol>
+						<li>All question is compulsory</li>
+						<li></li>
+					</ol>
+					<button id="start-btn" class="btn btn-primary">Goto Quiz</button>
+				
+					<!-- <div class="d-flex justify-content-center mt-5 quiz-loader">
+						
+						<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+							<span class="sr-only">Loading...</span>
+						</div>
+					</div> -->
 				</div>
 			</div>
 			<div class="col-sm-4"></div>
@@ -94,9 +106,9 @@
 	</div>
 
 	<!-- Button trigger modal -->
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#quiz-resume-popup">
+	<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#quiz-resume-popup">
 	  Launch demo modal
-	</button>
+	</button> -->
 
 	<!-- Modal -->
 	<div class="modal fade" id="quiz-resume-popup" tabindex="-1" role="dialog" aria-labelledby="quiz-resume-popupTitle" aria-hidden="true">
@@ -122,7 +134,9 @@
 	  </div>
 	</div>
 	
-	
+<footer class="container-fluid bg-dark mt-4">
+	<h1 class="text-white text-center mb-0 p-4">Satsang Quiz</h1>
+</footer>	
 </body>
 </html>
 
