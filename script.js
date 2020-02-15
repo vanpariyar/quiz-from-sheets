@@ -2,9 +2,9 @@ var scriptURL = "https://script.googleusercontent.com/macros/echo?user_content_k
 
 $(document).ready(function(){
     //Prevent submit to form of user
-    $('.ansBtn').click(function(e){
-        e.preventDefault();        
-    });
+    // $('#quiz-form').submit(function(e){
+    //     e.preventDefault();        
+    // });
 
     /**           
      * @param {type} type number
@@ -23,8 +23,15 @@ $(document).ready(function(){
                 }else{
                     localStorage.setItem('questionIndex', '0')
                     return true;
-                }
-
+                }    
+                case 3:
+                    if(localStorage.getItem('userAnswer')){
+                        localStorage.setItem('userAnswer', JSON.stringify(data));
+                        return true;
+                    }else{
+                        localStorage.setItem('userAnswer', '0')
+                        return true;
+                    }    
             default:
                 return false;
         }
@@ -40,28 +47,42 @@ $(document).ready(function(){
                     localStorage.setItem('questionIndex', '0')
                     return parseInt(localStorage.getItem('questionIndex'));
                 }
+            case 3:
+                if(localStorage.getItem('userAnswer')){
+                    return JSON.parse(localStorage.getItem('userAnswer'));
+                }else{
+                    localStorage.setItem('userAnswer', '')
+                    return JSON.parse(localStorage.getItem('userAnswer'));
+                }    
                 
             default:
                 return false;   
         }
     }
     
-    
+    function increaseAnsIndex(questionIndex){
+        var quiz = getItem(1);
+        console.log(quiz.length);
+        console.log(`quiz index ${questionIndex}`)
+        if(!(questionIndex+1 >= quiz.length) ){
+            questionIndex++;
+            setItem(2,questionIndex); 
+            return questionIndex;  
+        }
+        return false;
+    }
+        
+
     function quizSetup(questionIndex){
         var quiz = getItem(1);
-        if(quiz[questionIndex].question == "undefined"){
-            return false;
-        }
-        
         $("#question").text( quiz[questionIndex].question );
         $("label[for='radio1'] span").text(quiz[questionIndex].answer1);
         $("label[for='radio2'] span").text(quiz[questionIndex].answer2);
         $("label[for='radio3'] span").text(quiz[questionIndex].answer3);
         $("label[for='radio4'] span").text(quiz[questionIndex].answer4);
         $('.ansBtn').val(questionIndex);
-        setItem(2,questionIndex);
     }
-    
+
     /* ---------------------------------------------------------------------------- */
     if (typeof(Storage) !== "undefined") {
 
@@ -81,22 +102,28 @@ $(document).ready(function(){
     }
 
     var rightAnswer = [];
-    var userAnswer = [];
-    
     var quiz = getItem(1);
     quiz.map(function(value){
         rightAnswer.push(value.RightAnswer);
     });
-    var questionIndex = getItem(2);
-    quizSetup(questionIndex);
-    $('.ansBtn').click(function(e){
+    getItem(1);
+    $("#start-btn").click(function(e){
+        $('#rules').hide();
+        $(".quiz-body").show();
+        var questionIndex = getItem(2);
+        quizSetup(questionIndex);
+        
+    });
+    $('#quiz-form').submit(function(e){
+        e.preventDefault();        
+        var questionIndex = getItem(2);
+        var userAnswer = getItem(3);
         userAnswer[questionIndex] = (parseInt($('input[name="optradio"]:checked').val()));
-        questionIndex = getItem(2);
-        console.log(rightAnswer.length);
-        console.log(questionIndex);
         console.log(userAnswer);
-        if(rightAnswer.length - 2 >= questionIndex ){
-            quizSetup(questionIndex+1);
+        setItem( 3, userAnswer);
+        if(questionIndex = increaseAnsIndex(questionIndex)){
+            console.log(`quiz index ${questionIndex}`)
+            quizSetup(questionIndex);
         }
     });
     
