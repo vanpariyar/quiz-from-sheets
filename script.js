@@ -29,7 +29,7 @@ $(document).ready(function(){
                         localStorage.setItem('userAnswer', JSON.stringify(data));
                         return true;
                     }else{
-                        localStorage.setItem('userAnswer', '0')
+                        localStorage.setItem('userAnswer', '[""]')
                         return true;
                     }    
             default:
@@ -51,7 +51,7 @@ $(document).ready(function(){
                 if(localStorage.getItem('userAnswer')){
                     return JSON.parse(localStorage.getItem('userAnswer'));
                 }else{
-                    localStorage.setItem('userAnswer', '')
+                    localStorage.setItem('userAnswer', '[""]')
                     return JSON.parse(localStorage.getItem('userAnswer'));
                 }    
                 
