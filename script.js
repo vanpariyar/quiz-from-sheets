@@ -59,6 +59,17 @@ $(document).ready(function(){
                 return false;   
         }
     }
+
+    function removeItem( type ){
+        switch (type) {
+            case 2:
+                localStorage.removeItem('questionIndex');
+                break;
+        
+            default:
+                break;
+        }
+    }
     
     function increaseAnsIndex(questionIndex){
         var quiz = getItem(1);
@@ -71,7 +82,36 @@ $(document).ready(function(){
         }
         return false;
     }
+
+    function ShowResult(){
+        var rightAnswer = [];
+        var quiz = getItem(1);
+        quiz.map(function(value){
+            rightAnswer.push(value.RightAnswer);
+        });
+        var totalScore = 0;
+        let userAnswers = getItem(3);
+        rightAnswer.map(function(answer, key){
+            if(answer == userAnswers[key]){
+                totalScore++;
+            }
+        });
+        percentage =  ((totalScore / rightAnswer.length)*100).toFixed(2) ;
+
+        $(".quiz-body").hide();
+        $("#score").show();
+
+        $("#score h3").text(`Your Total Score is: ${totalScore} out of ${rightAnswer.length} and ${percentage}%`);
+
+        $(".restart-quiz").on('click', function(){
+            removeItem(2);
+            var questionIndex = getItem(2);
+            quizSetup(questionIndex);
+            $(".quiz-body").show();
+            $("#score").hide();
+        });
         
+    }
 
     function quizSetup(questionIndex){
         var quiz = getItem(1);
@@ -80,6 +120,7 @@ $(document).ready(function(){
         $("label[for='radio2'] span").text(quiz[questionIndex].answer2);
         $("label[for='radio3'] span").text(quiz[questionIndex].answer3);
         $("label[for='radio4'] span").text(quiz[questionIndex].answer4);
+        
         $('.ansBtn').val(questionIndex);
     }
 
@@ -101,11 +142,7 @@ $(document).ready(function(){
     // Sorry! No Web Storage support..
     }
 
-    var rightAnswer = [];
-    var quiz = getItem(1);
-    quiz.map(function(value){
-        rightAnswer.push(value.RightAnswer);
-    });
+    
     getItem(1);
     $("#start-btn").click(function(e){
         $('#rules').hide();
@@ -124,7 +161,10 @@ $(document).ready(function(){
         if(questionIndex = increaseAnsIndex(questionIndex)){
             console.log(`quiz index ${questionIndex}`)
             quizSetup(questionIndex);
+        }else{
+            ShowResult();
         }
     });
+
     
 });
