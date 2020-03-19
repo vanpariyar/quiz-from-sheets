@@ -73,8 +73,6 @@ $(document).ready(function(){
     
     function increaseAnsIndex(questionIndex){
         var quiz = getItem(1);
-        console.log(quiz.length);
-        console.log(`quiz index ${questionIndex}`)
         if(!(questionIndex+1 >= quiz.length) ){
             questionIndex++;
             setItem(2,questionIndex); 
@@ -115,6 +113,7 @@ $(document).ready(function(){
 
     function quizSetup(questionIndex){
         var quiz = getItem(1);
+        $("#quiz-form input[type=radio]").prop("checked",false);
         $("#question").text( quiz[questionIndex].question );
         $("label[for='radio1'] span").text(quiz[questionIndex].answer1);
         $("label[for='radio2'] span").text(quiz[questionIndex].answer2);
@@ -142,28 +141,34 @@ $(document).ready(function(){
     // Sorry! No Web Storage support..
     }
 
-    
     getItem(1);
     $("#start-btn").click(function(e){
         $('#rules').hide();
         $(".quiz-body").show();
         var questionIndex = getItem(2);
-        quizSetup(questionIndex);
-        
-    });
-    $('#quiz-form').submit(function(e){
-        e.preventDefault();        
-        var questionIndex = getItem(2);
         var userAnswer = getItem(3);
-        userAnswer[questionIndex] = (parseInt($('input[name="optradio"]:checked').val()));
-        console.log(userAnswer);
-        setItem( 3, userAnswer);
-        if(questionIndex = increaseAnsIndex(questionIndex)){
-            console.log(`quiz index ${questionIndex}`)
-            quizSetup(questionIndex);
-        }else{
+        if(userAnswer.length == (questionIndex+1)){
             ShowResult();
+        }else{
+            quizSetup(questionIndex);
         }
+    });
+
+    $('#quiz-form').submit(function(e){
+        e.preventDefault();   
+        if($("#quiz-form input[type=radio]:checked").length == 0){
+            alert('Select The Value Please');
+        }else{
+            var questionIndex = getItem(2);
+            var userAnswer = getItem(3);
+            userAnswer[questionIndex] = (parseInt($('input[name="optradio"]:checked').val()));
+            setItem( 3, userAnswer);
+            if(questionIndex = increaseAnsIndex(questionIndex)){
+                quizSetup(questionIndex);
+            }else{
+                ShowResult();
+            }
+        }     
     });
 
     
