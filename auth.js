@@ -1,8 +1,26 @@
-var scriptURL = "https://script.googleusercontent.com/macros/echo?user_content_key=pv30WIvh1efha4CiOWCAMl8Ims6nQvIx_55rsfi-Zrq6zOfbj9LVtIaLNMbLgBnXSxzOk3Ba4wOBbNAhX28i8aHovEZWy6Tmm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnKiVETP14lrnNGc4z7UnwmNyedJhO6PM3vO-zqYvLvh_E4zaIQ6VYVOWGGwbYae5_XiHpVOAX1lu&lib=MAx7Fe9quXaZoFeo9CoNgg_6H1RmW7M3x";
+var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
 $(document).ready(function(){
     $('.login-form').submit(function(e){
         e.preventDefault();
-
+        let user = {
+            name: "Hari",
+            email: "Hari.casdf@fsdf",
+            id: "fasdfsdf",
+        } 
+        var url = scriptURL+"?token="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
+    //     var abc= jQuery.ajax({
+    //      crossDomain: true,
+    //      url: url ,
+    //      method: "GET",
+    //      dataType: "jsonp",
+    //      success: function(e,f){ 
+    //        console.log(e);
+    //      },
+    //    });
+    $.getJSON( url, function( data ) {
+        console.log(data);
+        return data;
+    });
     });
 
     
@@ -21,18 +39,18 @@ function onSignIn(googleUser) {
         id: profile.getId(),
     } 
 
-    $.ajax({
-        method: "POST",
-        url: scriptURL,
-        data: user,
-        "async": true,
-        "crossDomain": true,
-        "headers": {
-          "accept": "application/json",
-          "Access-Control-Allow-Origin":"*"
-        },
-        success : function(response) {
-            console.log(response);
-        }
-    })
+    var url = scriptURL+"?token="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
+//     var abc= jQuery.ajax({
+//      crossDomain: true,
+//      url: url ,
+//      method: "GET",
+//      dataType: "jsonp",
+//      success: function(e,f){ 
+//         alert(e);
+//      },
+//    });
+   $.getJSON( url, function( data ) {
+    console.log(data);
+    return data;
+});
 }
