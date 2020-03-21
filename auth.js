@@ -3,28 +3,34 @@ $(document).ready(function(){
     $('.login-form').submit(function(e){
         e.preventDefault();
         let user = {
-            name: "Hari",
-            email: "Hari.casdf@fsdf",
+            name: $('.login-form #email').val(),
+            email: $('.login-form #email').val(),
+            id: $('.login-form #password').val(),
+        } 
+        var url = scriptURL+"?id="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
+        $.getJSON( url, function( data ) {
+            console.log(data);
+            return data;
+        });
+    });
+
+    $('.signup-form').submit(function(e){
+        e.preventDefault();
+        let user = {
+            name: "",
+            email: $('.signup-form #email').val(),
             id: "fasdfsdf",
         } 
-        var url = scriptURL+"?token="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
-    //     var abc= jQuery.ajax({
-    //      crossDomain: true,
-    //      url: url ,
-    //      method: "GET",
-    //      dataType: "jsonp",
-    //      success: function(e,f){ 
-    //        console.log(e);
-    //      },
-    //    });
-    $.getJSON( url, function( data ) {
-        console.log(data);
-        return data;
-    });
+        var url = scriptURL+"?id="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
+        $.getJSON( url, function( data ) {
+            console.log(data);
+            return data;
+        });
     });
 
     
 });
+
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -39,7 +45,7 @@ function onSignIn(googleUser) {
         id: profile.getId(),
     } 
 
-    var url = scriptURL+"?token="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
+    var url = scriptURL+"?id="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
 //     var abc= jQuery.ajax({
 //      crossDomain: true,
 //      url: url ,
@@ -49,8 +55,9 @@ function onSignIn(googleUser) {
 //         alert(e);
 //      },
 //    });
-   $.getJSON( url, function( data ) {
-    console.log(data);
-    return data;
-});
+    $.getJSON( url, function( data ) {
+        console.log(data);
+        return data;
+    });
+
 }
