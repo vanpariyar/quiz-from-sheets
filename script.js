@@ -1,5 +1,11 @@
 var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec?action=getquiz";
 
+
+function authUser (){
+    (localStorage.getItem('login') == 'undefined') && (localStorage.setItem('login', '0')) ;
+    (localStorage.getItem('login') == '0') && (window.location.href = '/login/');   
+}
+authUser();
 $(document).ready(function(){
     //Prevent submit to form of user
     // $('#quiz-form').submit(function(e){
@@ -170,6 +176,4 @@ $(document).ready(function(){
             }
         }     
     });
-
-    
 });
