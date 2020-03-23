@@ -8,10 +8,9 @@ $(document).ready(function(){
                     (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
                     if(data[type]){
                         localStorage.setItem('login', '1');
-                        var result = data.result;
                         data.token.length && localStorage.setItem('token', data.token);
                     }
-                    alert(result);
+                    alert(data.result);
                     return data;
                 });
                 break;
@@ -21,8 +20,8 @@ $(document).ready(function(){
                     (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
                     console.log(data[type]);
                     if(data[type]){
-                        var result = data.result;
-                        data.token.length && localStorage.setItem('token', data.token);    
+                        data.token.length && localStorage.setItem('token', data.token);
+                        (localStorage.getItem('login') == '0') && (window.location.href = '../');
                     }
                     alert(data.result);
                     return data;
