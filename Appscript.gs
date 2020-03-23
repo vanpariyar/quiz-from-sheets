@@ -1,5 +1,5 @@
 /* Source: https://gist.github.com/daichan4649/8877801 */
-const doGet = (e) => {
+function doGet(e){
 
   var sheetName = "quiz";
   
@@ -17,21 +17,69 @@ const doGet = (e) => {
       
     case 'login':
       return login(book, e);
-      break;  
+      break; 
+  
+    case 'signup':
+      return signup(book, e);
+      break; 
   }
   
 }
-
-const doPost = (e)=> {
-  return ContentService
-      .createTextOutput(JSON.stringify(e))
-      .setMimeType(ContentService.MimeType.JSON);
-}
+/**
+* Login Function For the user login
+*/
 
 function login(book, e){
-  const sheetName = "users";
+  var sheetName = "users";
+  var sheet = book.getSheetByName(sheetName);
+  var idFlag = 0;
+  var emailFlag = 0;
+  var lr= sheet.getLastRow();
+  var userEmail = [];
+  var userPass = [];
+  var token = '';
+  for(var i=1;i<=lr;i++){
+      if(sheet.getRange(i, 3).getValue()==e.parameter.email){
+        emailFlag = 1;
+      }
+      if(sheet.getRange(i, 4).getValue()==e.parameter.id){
+         idFlag = 1;
+      }
+      idFlag && emailFlag && (token = sheet.getRange(i, 4).getValue());
+  }
+  
+  
+  if(idFlag && emailFlag){
+    result = 'Login success...';
+    
+  }else if(!idFlag && emailFlag){
+    result = 'Wrong Password...';
+  }else{
+    result = 'Account not Exist, Please Signup...';
+  }
+  
+  makeLog(`user activity in login ${ (idFlag && emailFlag) ? 'sucess' : 'Failed' } Email: ${e.parameter.email} , User: ${e.parameter.name}`);  
+  var token = Utilities.base64Encode(e.parameter.email);
+  result = JSON.stringify({
+    "result": result,
+    "login" : (idFlag && emailFlag) ? 1 : 0,
+    "token" : token,
+  });  
+  
+  return ContentService
+  .createTextOutput(result)
+  .setMimeType(ContentService.MimeType.JSON);   
+  
+}
+/**
+* signup Function For the user signUp
+*/
+
+function signup(book, e){
+  var sheetName = "users";
   var sheet = book.getSheetByName(sheetName);
   var flag=1;
+  var token = '';
   var lr= sheet.getLastRow();
   for(var i=1;i<=lr;i++){
     if(sheet.getRange(i, 3).getValue()==e.parameter.email ){
@@ -42,16 +90,30 @@ function login(book, e){
   if(flag==1){
     var d = new Date();
     var currentTime = d.toLocaleString();
-    var rowData = sheet.appendRow([currentTime,e.parameter.name, e.parameter.email, e.parameter.id]);
-    var result="Login successful";
+    token = Utilities.base64Encode(e.parameter.email);
+    var rowData = sheet.appendRow([currentTime,e.parameter.name, e.parameter.email, e.parameter.id, token]);
+    var result="SignUp successful";
   }
   result = JSON.stringify({
     "result": result,
-    "login" : flag
+    "signup" : flag,
+    "token" : token
   });  
+  makeLog(`user sign up in Email: ${e.parameter.email} , User: ${e.parameter.name}`);
   return ContentService
   .createTextOutput(result)
   .setMimeType(ContentService.MimeType.JSON);   
+  
+}
+
+function demo(book, e){
+  var sheetName = "users";
+  var book = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = book.getSheetByName(sheetName);
+  var flag=1;
+  var lr= sheet.getLastRow();
+  
+  Logger.log(sheet.getRange('B'+1+':'+'B'+lr).getValues());
   
 }
 
@@ -90,4 +152,18 @@ function convertSheet2JsonText(sheet) {
   }
 
   return jsonArray;
+}
+
+function makeLog(details = 'demo Log'){
+  var d = new Date();
+  var currentTime = d.toLocaleString();
+  var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var yourNewSheet = activeSpreadsheet.getSheetByName("Logs");
+  if (yourNewSheet == null) {
+    yourNewSheet = activeSpreadsheet.insertSheet();
+    yourNewSheet.setName("Logs");
+    yourNewSheet.appendRow(['Time Stemp', "Details"]);
+  }
+  yourNewSheet.appendRow([currentTime, details ]);
+  
 }
