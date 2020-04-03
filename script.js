@@ -59,6 +59,14 @@ $(document).ready(function(){
                 }else{
                     localStorage.setItem('userAnswer', '[""]')
                     return JSON.parse(localStorage.getItem('userAnswer'));
+                }
+                
+            case 4:
+                if(localStorage.getItem('token')){
+                    return localStorage.getItem('token');
+                }else{
+                    localStorage.setItem('token', '')
+                    return localStorage.getItem('token');
                 }    
                 
             default:
@@ -87,6 +95,30 @@ $(document).ready(function(){
         return false;
     }
 
+    /**
+     *  Common Function  For send data via ajax.
+     *  Send the data To doPost() appScript.
+     */
+    function qfsSendData( data = {} ) {
+        $.ajax({
+            type: "POST",
+            url: scriptURL,
+            data: $(data).serializeArray(),
+            headers: {
+                'Content-type': 'application/x-www-form-urlencoded',
+            },
+            success: function (data)
+            {
+                alert(data);
+            }
+        });
+    }
+
+    /**
+     * Show the result After Quiz answer done.
+     * get the data from Local Storage
+     */
+
     function ShowResult(){
         var rightAnswer = [];
         var quiz = getItem(1);
@@ -114,7 +146,12 @@ $(document).ready(function(){
             $(".quiz-body").show();
             $("#score").hide();
         });
-        
+
+        qfsSendData({ 
+            score: totalScore,
+            action: 'result',
+            token: getItem(4),
+        }); // send data to the s
     }
 
     function quizSetup(questionIndex){
