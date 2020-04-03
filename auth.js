@@ -1,30 +1,62 @@
 var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
 $(document).ready(function(){
+    var sendRequest = function(url, type){
+        switch(type){
+            case 'login':
+                $.getJSON( url, function( data ) {
+                    (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
+                    (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
+                    if(data[type]){
+                        localStorage.setItem('login', '1');
+                        data.token.length && localStorage.setItem('token', data.token);
+                    }
+                    alert(data.result);
+                    return data;
+                });
+                break;
+            case 'signup':    
+                $.getJSON( url, function( data ) {
+                    (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
+                    (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
+                    console.log(data[type]);
+                    if(data[type]){
+                        data.token.length && localStorage.setItem('token', data.token);
+                        (localStorage.getItem('login') == '0') && (window.location.href = '../');
+                    }
+                    alert(data.result);
+                    return data;
+                });
+                break;
+            default:
+                console.log('Case default');    
+        }
+        
+    }
     $('.login-form').submit(function(e){
         e.preventDefault();
         let user = {
-            name: "Hari",
-            email: "Hari.casdf@fsdf",
-            id: "fasdfsdf",
+            name: 'login',
+            email: $('.login-form #email').val(),
+            id: $('.login-form #password').val(),
         } 
-        var url = scriptURL+"?token="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
-    //     var abc= jQuery.ajax({
-    //      crossDomain: true,
-    //      url: url ,
-    //      method: "GET",
-    //      dataType: "jsonp",
-    //      success: function(e,f){ 
-    //        console.log(e);
-    //      },
-    //    });
-    $.getJSON( url, function( data ) {
-        console.log(data);
-        return data;
+        var url = scriptURL+"?id="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
+        sendRequest(url, 'login');
     });
+
+    $('.signup-form').submit(function(e){
+        e.preventDefault();
+        let user = {
+            name: $('.signup-form #name').val(),
+            email: $('.signup-form #email').val(),
+            id: $('.signup-form #password').val(),
+        } 
+        var url = scriptURL+"?id="+user.id+"&email="+user.email+"&name="+user.name+"&action=signup";
+        sendRequest(url, 'signup');
     });
 
     
 });
+
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -36,21 +68,13 @@ function onSignIn(googleUser) {
     let user = {
         name: profile.getName(),
         email: profile.getEmail(),
-        id: profile.getId(),
+        id: profile.id_token(),
     } 
 
-    var url = scriptURL+"?token="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
-//     var abc= jQuery.ajax({
-//      crossDomain: true,
-//      url: url ,
-//      method: "GET",
-//      dataType: "jsonp",
-//      success: function(e,f){ 
-//         alert(e);
-//      },
-//    });
-   $.getJSON( url, function( data ) {
-    console.log(data);
-    return data;
-});
+    var url = scriptURL+"?id="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
+    $.getJSON( url, function( data ) {
+        console.log(data);
+        return data;    
+    });
+
 }
