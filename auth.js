@@ -1,35 +1,61 @@
-var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
 $(document).ready(function(){
-    var sendRequest = function(url, type){
-        switch(type){
-            case 'login':
-                $.getJSON( url, function( data ) {
-                    (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
-                    (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
-                    if(data[type]){
-                        localStorage.setItem('login', '1');
-                        data.token.length && localStorage.setItem('token', data.token);
+    
+    /**
+     * @param {send request URL} url reqired
+     * @param {Type for the request} type reqired
+     */
+    var handleRequest = function(user, type){
+        var ajaxRequest = function(user){
+            var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
+            // user = { data : user };
+            $.ajax({
+                type: "POST",
+                url: scriptURL,
+                async: true,
+                data: user,
+                headers: {
+                    // 'Content-Type': 'text/plain;charset=utf-8',
+                    'Content-type': 'application/x-www-form-urlencoded',
+                    // 'Content-type': 'application/json',
+                },
+                beforeSuccess: function(){
+                    setTimeout(function(){ alert("Hello"); }, 5000);
+                },
+                success: function (data)
+                {
+                    switch(type){
+                        case 'login':
+                            (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
+                            (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
+                            if(data[type]){
+                                localStorage.setItem('login', '1');
+                                data.token.length && localStorage.setItem('token', data.token);
+                            }
+                            alert(data.result);
+                            return data;
+
+                            break;
+                        case 'signup':  
+                            (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
+                            (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
+                            console.log(data[type]);
+                            if(data[type]){
+                                data.token.length && localStorage.setItem('token', data.token);
+                                (localStorage.getItem('login') == '0') && (window.location.href = '../');
+                            }
+                            alert(data.result);
+                            return data;
+            
+                            break;
+                        default:
+                            console.log('Case default');    
                     }
-                    alert(data.result);
-                    return data;
-                });
-                break;
-            case 'signup':    
-                $.getJSON( url, function( data ) {
-                    (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
-                    (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
-                    console.log(data[type]);
-                    if(data[type]){
-                        data.token.length && localStorage.setItem('token', data.token);
-                        (localStorage.getItem('login') == '0') && (window.location.href = '../');
-                    }
-                    alert(data.result);
-                    return data;
-                });
-                break;
-            default:
-                console.log('Case default');    
-        }
+                    console.log(data);
+                }
+            });
+        } 
+        ajaxRequest(user);
+        
         
     }
     $('.login-form').submit(function(e){
@@ -38,9 +64,9 @@ $(document).ready(function(){
             name: 'login',
             email: $('.login-form #email').val(),
             id: $('.login-form #password').val(),
+            action: 'login',
         } 
-        var url = scriptURL+"?id="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
-        sendRequest(url, 'login');
+        handleRequest(user, 'login');
     });
 
     $('.signup-form').submit(function(e){
@@ -49,9 +75,9 @@ $(document).ready(function(){
             name: $('.signup-form #name').val(),
             email: $('.signup-form #email').val(),
             id: $('.signup-form #password').val(),
+            action: "signup",
         } 
-        var url = scriptURL+"?id="+user.id+"&email="+user.email+"&name="+user.name+"&action=signup";
-        sendRequest(url, 'signup');
+        handleRequest(user, 'signup');
     });
 
     
@@ -59,22 +85,19 @@ $(document).ready(function(){
 
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    // console.log('Name: ' + profile.getName());
+    // console.log('Image URL: ' + profile.getImageUrl());
+    // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
     var id_token = googleUser.getAuthResponse().id_token;
-    console.log("ID Token: " + id_token);
+    // console.log("ID Token: " + id_token);
     let user = {
         name: profile.getName(),
         email: profile.getEmail(),
-        id: profile.id_token(),
+        id: id_token,
+        action: 'login',
     } 
 
-    var url = scriptURL+"?id="+user.id+"&email="+user.email+"&name="+user.name+"&action=login";
-    $.getJSON( url, function( data ) {
-        console.log(data);
-        return data;    
-    });
+    handleRequest(user, 'signup');
 
 }

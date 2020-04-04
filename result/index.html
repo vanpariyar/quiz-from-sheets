@@ -25,7 +25,7 @@
               <a class="nav-link" href="../">Home <span class="sr-only">(current)</span></a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="../result">
+				<a class="nav-link" href="#">
 				  <i class="fa fa-list-alt"></i> Result
 				</a>
 			</li>
@@ -51,35 +51,25 @@
 			<h2>Hello</h2>
 			<h4>Welcom to Quiz from Sheets.</h4>
 		</div>
-		
-		<table class="table table-striped">
+		<div class="text-center mt-5">
+			<button class="btn btn-primary resultBtn"> Click To See Result </button>
+		</div>
+		<table class="table resultTable table-striped" style="display: none;">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Name</th>
+                <th scope="col">Score</th>
+                <!-- <th scope="col">Handle</th> -->
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <!-- <tr>
                 <th scope="row">1</th>
                 <td>Mark</td>
                 <td>Otto</td>
                 <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              </tr> -->
             </tbody>
         </table>
 		
@@ -121,4 +111,4 @@
 </html>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="script.js"></script>
+<script src="result.js"></script>
