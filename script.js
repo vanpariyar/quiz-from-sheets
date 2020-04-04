@@ -1,4 +1,4 @@
-var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec?action=getquiz";
+var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
 
 
 function authUser (){
@@ -103,7 +103,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             url: scriptURL,
-            data: $(data).serializeArray(),
+            data: data,
             headers: {
                 'Content-type': 'application/x-www-form-urlencoded',
             },
