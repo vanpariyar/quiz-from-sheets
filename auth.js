@@ -95,9 +95,9 @@ function onSignIn(googleUser) {
     var id_token = googleUser.getAuthResponse().id_token;
     // console.log("ID Token: " + id_token);
     let user = {
-        name: profile.getName(),
-        email: profile.getEmail(),
-        id: profile.getId(),
+        name: "Name not display For security reson"/*profile.getName()*/,
+        email: 'GoogleSignin@googleUser.com'/*profile.getEmail()*/,
+        id: 'demo44235234543ID'/*profile.getId()*/,
         action: 'googleSignin',
     } 
     console.log(user);
