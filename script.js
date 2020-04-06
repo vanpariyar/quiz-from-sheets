@@ -46,6 +46,7 @@ $(document).ready(function(){
         switch(type){
             case 1:
                 return JSON.parse(localStorage.getItem('quiz'));
+
             case 2:
                 if(localStorage.getItem('questionIndex')){
                     return parseInt(localStorage.getItem('questionIndex'));
@@ -76,6 +77,9 @@ $(document).ready(function(){
 
     function removeItem( type ){
         switch (type) {
+            case 1:
+                return localStorage.removeItem('quiz');
+
             case 2:
                 localStorage.removeItem('questionIndex');
                 break;
@@ -140,8 +144,11 @@ $(document).ready(function(){
         $("#score h3").text(`Your Total Score is: ${totalScore} out of ${rightAnswer.length} and ${percentage}%`);
 
         $(".restart-quiz").on('click', function(){
+            $(this).prop('value', 'Loading Your quiz .....')
             removeItem(2);
+            removeItem(1);
             var questionIndex = getItem(2);
+            getQuiz();
             quizSetup(questionIndex);
             $(".quiz-body").show();
             $("#score").hide();
@@ -170,15 +177,19 @@ $(document).ready(function(){
     if (typeof(Storage) !== "undefined") {
 
         // NOTE : Remove this if condiotion if found it is for testing purpose
-        if(!getItem(1)){
-            $.ajaxSetup({
-                async: false
-            });
-            $.getJSON( scriptURL, function( data ) {
-                setItem(1, data);
-                return data;
-            });
+        function getQuiz(){
+            if(!getItem(1)){
+                $.ajaxSetup({
+                    async: false
+                });
+                $.getJSON( scriptURL+"?action=getquiz", function( data ) {
+                    setItem(1, data);
+                    return data;
+                });
+            }
         }
+        getQuiz();
+        
         
     } else {
     // Sorry! No Web Storage support..
