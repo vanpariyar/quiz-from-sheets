@@ -1,63 +1,64 @@
+var handleRequest = function(user, type){
+    var ajaxRequest = function(user){
+        var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
+        // user = { data : user };
+        $.ajax({
+            type: "POST",
+            url: scriptURL,
+            async: true,
+            data: user,
+            headers: {
+                // 'Content-Type': 'text/plain;charset=utf-8',
+                'Content-type': 'application/x-www-form-urlencoded',
+                // 'Content-type': 'application/json',
+            },
+            beforeSuccess: function(){
+                setTimeout(function(){ alert("Hello"); }, 5000);
+            },
+            success: function (data)
+            {
+                switch(type){
+                    case 'login':
+                        (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
+                        (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
+                        if(data[type]){
+                            localStorage.setItem('login', '1');
+                            data.token.length && localStorage.setItem('token', data.token);
+                        }
+                        alert(data.result);
+                        return data;
+
+                        break;
+                    case 'signup':  
+                        (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
+                        (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
+                        console.log(data[type]);
+                        if(data[type]){
+                            data.token.length && localStorage.setItem('token', data.token);
+                            (localStorage.getItem('login') == '0') && (window.location.href = '../');
+                        }
+                        alert(data.result);
+                        return data;
+        
+                        break;
+                    default:
+                        console.log('Case default');    
+                }
+                console.log(data);
+            }
+        });
+    } 
+    ajaxRequest(user);
+    
+    
+}
 $(document).ready(function(){
     
     /**
      * @param {send request URL} url reqired
      * @param {Type for the request} type reqired
      */
-    var handleRequest = function(user, type){
-        var ajaxRequest = function(user){
-            var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
-            // user = { data : user };
-            $.ajax({
-                type: "POST",
-                url: scriptURL,
-                async: true,
-                data: user,
-                headers: {
-                    // 'Content-Type': 'text/plain;charset=utf-8',
-                    'Content-type': 'application/x-www-form-urlencoded',
-                    // 'Content-type': 'application/json',
-                },
-                beforeSuccess: function(){
-                    setTimeout(function(){ alert("Hello"); }, 5000);
-                },
-                success: function (data)
-                {
-                    switch(type){
-                        case 'login':
-                            (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
-                            (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
-                            if(data[type]){
-                                localStorage.setItem('login', '1');
-                                data.token.length && localStorage.setItem('token', data.token);
-                            }
-                            alert(data.result);
-                            return data;
-
-                            break;
-                        case 'signup':  
-                            (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
-                            (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
-                            console.log(data[type]);
-                            if(data[type]){
-                                data.token.length && localStorage.setItem('token', data.token);
-                                (localStorage.getItem('login') == '0') && (window.location.href = '../');
-                            }
-                            alert(data.result);
-                            return data;
-            
-                            break;
-                        default:
-                            console.log('Case default');    
-                    }
-                    console.log(data);
-                }
-            });
-        } 
-        ajaxRequest(user);
-        
-        
-    }
+    
     $('.login-form').submit(function(e){
         e.preventDefault();
         let user = {
@@ -77,9 +78,11 @@ $(document).ready(function(){
             id: $('.signup-form #password').val(),
             action: "signup",
         } 
+        console.log(user);
         handleRequest(user, 'signup');
     });
 
+    
     
 });
 
@@ -92,12 +95,13 @@ function onSignIn(googleUser) {
     var id_token = googleUser.getAuthResponse().id_token;
     // console.log("ID Token: " + id_token);
     let user = {
-        name: profile.getName(),
-        email: profile.getEmail(),
-        id: id_token,
-        action: 'login',
+        name: "Name not display For security reson"/*profile.getName()*/,
+        email: 'GoogleSignin@googleUser.com'/*profile.getEmail()*/,
+        id: 'demo44235234543ID'/*profile.getId()*/,
+        action: 'googleSignin',
     } 
+    console.log(user);
 
-    handleRequest(user, 'signup');
+    handleRequest(user, 'login');
 
 }
