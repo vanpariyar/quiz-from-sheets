@@ -1,6 +1,12 @@
 # quiz-from-sheets
 we are developing the quiz which fetches the questions from the google sheets and it will store the answers of users in the sheet
 
+## Features:
+
+1. Generates quiz directly from the Google shhets.
+2. you can use this login signup functionality to extend your Project.
+3. this is opensource You can also contribute.
+
 ### Demo URL :point_right: -> https://vanpariyar.github.io/quiz-from-sheets :octocat:
 
 see Sheets -> https://docs.google.com/spreadsheets/d/1hioz7VjnRoF47XBgL1ZyocTFqnEgqzVHNcjmVd2vE68/
