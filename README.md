@@ -42,7 +42,10 @@ Set settings as shown.
 - Run as me required to use on your website.
 
 Copy This retrived URL.
-![Screenshot from 2020-03-27 20-32-36](https://user-images.githubusercontent.com/26689210/77771069-3a976280-706c-11ea-92a2-6bf4444ed96f.png)
+
+Please, Do same settings.
+
+![Screenshot from 2020-04-10 10-34-57](https://user-images.githubusercontent.com/26689210/78964233-2432e180-7b17-11ea-88b7-bd31d29db995.png)
 
 publish the script as a web app.
 
