@@ -43,6 +43,10 @@ function doPost(e){
       return signup(book, e);
       break;
       
+    case 'googleSignin':
+      return googleSignin(book, e);
+      break;  
+      
     case 'result':
       return result(book, e);
       break;  
@@ -129,6 +133,56 @@ function signup(book, e){
   .setMimeType(ContentService.MimeType.JSON);   
   
 }
+
+/**
+* Handle Google SignIN
+*/
+function googleSignin(book, e){
+  var sheetName = "users";
+  var sheet = book.getSheetByName(sheetName);
+  var idFlag = 0;
+  var emailFlag = 0;
+  var lr= sheet.getLastRow();
+  var userEmail = [];
+  var userPass = [];
+  var token = '';
+  for(var i=1;i<=lr;i++){
+      if(sheet.getRange(i, 3).getValue()==e.parameter.email){
+        emailFlag = 1;
+      }
+      if(sheet.getRange(i, 4).getValue()==e.parameter.id){
+         idFlag = 1;
+      }
+      idFlag && emailFlag && (token = sheet.getRange(i, 4).getValue());
+  }
+  
+  
+  if(idFlag && emailFlag){
+    result = 'Login success...';
+    
+  }else if(!idFlag && emailFlag){
+    result = 'Wrong Password...';
+  }else{
+    var d = new Date();
+    var currentTime = d.toLocaleString();
+    var token = Utilities.base64Encode(e.parameter.email);
+    var rowData = sheet.appendRow([currentTime,e.parameter.name, e.parameter.email, e.parameter.id, token]);
+    result = 'Signup Success ....';
+  }
+  
+  makeLog(`user activity in login ${ (idFlag && emailFlag) ? 'sucess' : 'Failed' } Email: ${e.parameter.email} , User: ${e.parameter.name}`);  
+  var token = Utilities.base64Encode(e.parameter.email);
+  result = JSON.stringify({
+    "result": result,
+    "login" : (idFlag && emailFlag) ? 1 : 0,
+    "token" : token,
+  });  
+  return ContentService
+  .createTextOutput(result)
+  .setMimeType(ContentService.MimeType.JSON);   
+  
+}
+
 
 function demo(book, e){
   var sheetName = "users";
