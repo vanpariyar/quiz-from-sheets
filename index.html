@@ -19,10 +19,10 @@
 	</script>
 	<title>Satsang Sabha Quiz</title>
 	<link href="https://fonts.googleapis.com/css?family=Signika&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="style.css">
 
 </head>
@@ -58,110 +58,47 @@
           </span>
         </div>
 	</nav>
-	  
-	<div class="container mb-5">
-		<div class="text-center">
-			<h2>Hello</h2>
-			<h4>Welcom to Quiz from Sheets.</h4>
+	<div class="container">
+		<div class="title text-center">
+			<h1>Hello This is the satsag Quiz</h1>
 		</div>
-		
-		<div class="row">
-			<div class="col-sm-4"></div>
-			<div class="col-sm-4">
-				<div class="card" style="width:auto">
-					<img class="card-img-top" src="https://lh3.googleusercontent.com/twN6CGQLGe7l8BPa_4-1qkZ7FWL5CRUmQVHLymmNIxqNy8pxqeCeU8HJkLSWPEO7ZGbF8Cs3O5G-0kSaLNFXp555H0qdT4vYcqYflNzL0ZCNzcm35ktQkoKEAxSakQ_IS1-ynQuakqmHtTpYE-4cpPUFXccHmXKnF3K3bw1PQGPxU8nlF-DyxznbuV2G_NqGq8L8l-MPlwA1TUOghEECUAS9Qp3mAWEeqmpQ5J15cHiedQRYlQrS4hR-Z5lebT_Ofj3Ji6-_FWHK-04rpUSu8bB9ekTuzpX3vIRCzEfe37enk4rwbSb-hAEc9ymsmxG5PkGQwY-KJnnsRgRW-y9hLZCKLOxcwob_LGPZOwX_6oTUKnjqOX32xRNjkW5B4HKp8TlFtRdK6lFQJBr4LyHCFquZ6LVu-EsMwNGKnO7Bd4elTOW9ZAZfbfBCoSb9mK8nk0RYrzO3dQ61N_iDiN3JHGl5f902k2EhD5so2PvwqhnQ_MHeR9DGswNTWJI-ZYKzHWq9TqnHvjTQJ1D5cDb-zJmDtqfMKGMjuEeoH09wHX1nRzTGtnOE1DBzIgtL1_Fxj4cE_kbCwLrhSecKJP7qu_8WwaBVTrsf4mazYNGF6PaGds8NrpHoNMJG9eF2o0FP_efA71VMWNdHSiOu-ZwEdXaF2pwh3woUwGkCrZcdlP_4mtAIlEfA9Y8hB0tXY7cIhAp_O-nAk3mMD_isaZ9Qo0grefnfYIR59HXwLcZI6rQREcVQMg=w353-h539-no" alt="Card image" >
-					<div class="card-body text-center quiz-body" style="display: none;">
-						<h4 class="card-title">Questions</h4>
-						<p class="card-text" id="question">Some example text some example text. John Doe is an architect and engineer</p>
-						<form id="quiz-form" action="">
-							<div class="form-check-inline">
-							  <label class="form-check-label" for="radio1">
-								<input type="radio" class="form-check-input" id="radio1" name="optradio" value="1"> <span>Option 1</span> 
-							  </label>
-							</div>
-							<div class="form-check-inline">
-							  <label class="form-check-label" for="radio2">
-								<input type="radio" class="form-check-input" id="radio2" name="optradio" value="2"> <span>Option 2</span> 
-							  </label>
-							</div>
-							<br/>
-							<div class="form-check-inline">
-								<label class="form-check-label" for="radio3">
-								  <input type="radio" class="form-check-input" id="radio3" name="optradio" value="3" > <span>Option 3</span> 
-								</label>
-							  </div>
-							  <div class="form-check-inline">
-								<label class="form-check-label" for="radio4">
-								  <input type="radio" class="form-check-input" id="radio4" name="optradio" value="4"> <span>Option 4</span> 
-								</label>
-							  </div>
-							<br>
-							<!-- <button class="btn btn-primary prev">Prev</button> -->
-							<button type="submit" class="ansBtn mt-2 btn btn-primary" value="-1">Submit</button>
-							<!-- <button class="btn btn-primary next">Next</button> -->
-						</form>
-					</div>
+		<div class="quiz-container text-center card p-1 pb-3 pt-3 shadow">
+			<figure class="w-25 img-thumbnail mx-auto round shadow" >
+				<img src="https://lh3.googleusercontent.com/twN6CGQLGe7l8BPa_4-1qkZ7FWL5CRUmQVHLymmNIxqNy8pxqeCeU8HJkLSWPEO7ZGbF8Cs3O5G-0kSaLNFXp555H0qdT4vYcqYflNzL0ZCNzcm35ktQkoKEAxSakQ_IS1-ynQuakqmHtTpYE-4cpPUFXccHmXKnF3K3bw1PQGPxU8nlF-DyxznbuV2G_NqGq8L8l-MPlwA1TUOghEECUAS9Qp3mAWEeqmpQ5J15cHiedQRYlQrS4hR-Z5lebT_Ofj3Ji6-_FWHK-04rpUSu8bB9ekTuzpX3vIRCzEfe37enk4rwbSb-hAEc9ymsmxG5PkGQwY-KJnnsRgRW-y9hLZCKLOxcwob_LGPZOwX_6oTUKnjqOX32xRNjkW5B4HKp8TlFtRdK6lFQJBr4LyHCFquZ6LVu-EsMwNGKnO7Bd4elTOW9ZAZfbfBCoSb9mK8nk0RYrzO3dQ61N_iDiN3JHGl5f902k2EhD5so2PvwqhnQ_MHeR9DGswNTWJI-ZYKzHWq9TqnHvjTQJ1D5cDb-zJmDtqfMKGMjuEeoH09wHX1nRzTGtnOE1DBzIgtL1_Fxj4cE_kbCwLrhSecKJP7qu_8WwaBVTrsf4mazYNGF6PaGds8NrpHoNMJG9eF2o0FP_efA71VMWNdHSiOu-ZwEdXaF2pwh3woUwGkCrZcdlP_4mtAIlEfA9Y8hB0tXY7cIhAp_O-nAk3mMD_isaZ9Qo0grefnfYIR59HXwLcZI6rQREcVQMg=w353-h539-no" 
+					alt=""
+					class="d-block img-fluid"
+				>
+			</figure>
+			<p class="question-count">This is the question 3</p>
+			<h4 class="question">This is the question for the quiz this can be very big ?</h4>
+			<div class="row w-sm-50 m-auto">
+				<div class="col-sm-6 mt-3">
+					<a href="javascript:void(0);" role="button" aria-pressed="true" class="btn btn-link card text-dark rounded p-3 border-top-0 border-success">
+						Answer 1
+					</a>
 				</div>
-				<div id="rules">
-					<h3 class="text-center">Rules</h3>
-					<ol>
-						<li>All question is compulsory.</li>
-						<li>There are no any deduction for wrong answers.</li>
-					</ol>
-					<button id="start-btn" class="btn btn-primary">Goto Quiz</button>
-				
-					<!-- <div class="d-flex justify-content-center mt-5 quiz-loader">
-						
-						<div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-							<span class="sr-only">Loading...</span>
-						</div>
-					</div> -->
+				<div class="col-sm-6 mt-3">
+					<a href="javascript:void(0);" role="button" aria-pressed="true" class="btn btn-link card text-dark rounded p-3 border-top-0 border-info">
+						Answer 2
+					</a>
 				</div>
-				<div id="score" class="text-center" style="display: none;">
-					<h3 class="mt-5"></h3>
-					<a class="btn btn-danger restart-quiz" href="javascript:void();" >Restart Quiz</a>
-					<a class="btn btn-primary" href="result/">See Result</a>
+				<div class="col-sm-6 mt-3">
+					<a href="javascript:void(0);" role="button" aria-pressed="true" class="btn btn-link card text-dark rounded p-3 border-top-0 border-primary">
+						Answer 3
+					</a>
+				</div>
+				<div class="col-sm-6 mt-3">
+					<a href="javascript:void(0);" role="button" aria-pressed="true" class="btn btn-link card text-dark rounded p-3 border-top-0 border-warning">
+						Answer 4
+					</a>
 				</div>
 			</div>
-			<div class="col-sm-4"></div>
 		</div>
-		
 	</div>
-
-	<!-- Button trigger modal -->
-	<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#quiz-resume-popup">
-	  Launch demo modal
-	</button> -->
-
-	<!-- Modal -->
-	<div class="modal fade" id="quiz-resume-popup" tabindex="-1" role="dialog" aria-labelledby="quiz-resume-popupTitle" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLongTitle">Resume Quiz ?</h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body text-center">
-	        <button type="button" class="btn btn-danger w-25">Yes</button>
-	        <button type="button" class="btn btn-primary w-25">No</button>
-	        <h4 class="mt-4">Jay Swaminarayan</h4>
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	      </div>
-	      <div class="modal-footer">
-	        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Save changes</button> -->
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
-<footer class="container-fluid bg-dark">
-	<h1 class="text-white text-center">Satsang Quiz</h1>
-</footer>	
+	<footer class="container-fluid bg-dark mt-5">
+		<h1 class="text-white text-center">Satsang Quiz</h1>
+	</footer>	
 </body>
 </html>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ 
 <script src="script.js"></script>
