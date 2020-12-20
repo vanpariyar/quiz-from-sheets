@@ -59,10 +59,10 @@
         </div>
 	</nav>
 	<div class="container">
-		<div class="title text-center">
+		<!-- <div class="title text-center">
 			<h1>Hello This is the satsag Quiz</h1>
-		</div>
-		<div class="quiz-container text-center card p-1 pb-3 pt-3 shadow">
+		</div> -->
+		<div id="quiz-container" class="text-center card p-1 pb-3 pt-3 shadow mt-5 d-none">
 			<figure class="w-25 img-thumbnail mx-auto round shadow" >
 				<img src="https://lh3.googleusercontent.com/twN6CGQLGe7l8BPa_4-1qkZ7FWL5CRUmQVHLymmNIxqNy8pxqeCeU8HJkLSWPEO7ZGbF8Cs3O5G-0kSaLNFXp555H0qdT4vYcqYflNzL0ZCNzcm35ktQkoKEAxSakQ_IS1-ynQuakqmHtTpYE-4cpPUFXccHmXKnF3K3bw1PQGPxU8nlF-DyxznbuV2G_NqGq8L8l-MPlwA1TUOghEECUAS9Qp3mAWEeqmpQ5J15cHiedQRYlQrS4hR-Z5lebT_Ofj3Ji6-_FWHK-04rpUSu8bB9ekTuzpX3vIRCzEfe37enk4rwbSb-hAEc9ymsmxG5PkGQwY-KJnnsRgRW-y9hLZCKLOxcwob_LGPZOwX_6oTUKnjqOX32xRNjkW5B4HKp8TlFtRdK6lFQJBr4LyHCFquZ6LVu-EsMwNGKnO7Bd4elTOW9ZAZfbfBCoSb9mK8nk0RYrzO3dQ61N_iDiN3JHGl5f902k2EhD5so2PvwqhnQ_MHeR9DGswNTWJI-ZYKzHWq9TqnHvjTQJ1D5cDb-zJmDtqfMKGMjuEeoH09wHX1nRzTGtnOE1DBzIgtL1_Fxj4cE_kbCwLrhSecKJP7qu_8WwaBVTrsf4mazYNGF6PaGds8NrpHoNMJG9eF2o0FP_efA71VMWNdHSiOu-ZwEdXaF2pwh3woUwGkCrZcdlP_4mtAIlEfA9Y8hB0tXY7cIhAp_O-nAk3mMD_isaZ9Qo0grefnfYIR59HXwLcZI6rQREcVQMg=w353-h539-no" 
 					alt=""
@@ -70,7 +70,7 @@
 				>
 			</figure>
 			<p class="question-count">This is the question 3</p>
-			<h4 class="question">This is the question for the quiz this can be very big ?</h4>
+			<h3 class="question">This is the question for the quiz this can be very big ?</h3>
 			<div class="row w-sm-50 m-auto">
 				<div class="col-sm-6 mt-3">
 					<a href="javascript:void(0);" role="button" aria-pressed="true" class="btn btn-link card text-dark rounded p-3 border-top-0 border-success">
@@ -91,6 +91,28 @@
 					<a href="javascript:void(0);" role="button" aria-pressed="true" class="btn btn-link card text-dark rounded p-3 border-top-0 border-warning">
 						Answer 4
 					</a>
+				</div>
+			</div>
+		</div>
+		<div id="start-container" class="text-center card p-1 pb-3 pt-3 shadow mt-5">
+			<p>Welcom to Quiz</p>
+			<h3>Click Here To start Quiz</h3>
+			<div class="row w-sm-50 m-auto">
+				<div class="col-sm-12 mt-3">
+					<a id="js-start-quiz" href="javascript:void(0);" role="button" aria-pressed="true" class="btn btn-link card text-dark rounded p-3 border-top-0 border-success">
+						Start Quiz
+					</a>
+				</div>
+			</div>
+		</div>
+		<div id="loading-container" class="text-center card p-1 pb-3 pt-3 shadow mt-5 d-none">
+			<p>Welcom to Quiz</p>
+			<h3>Loading your Quiz ...</h3>
+			<div class="row w-sm-50 m-auto">
+				<div class="text-center">
+					<div class="spinner-border" role="status">
+					  <span class="sr-only">Loading...</span>
+					</div>
 				</div>
 			</div>
 		</div>
