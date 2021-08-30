@@ -1,66 +1,37 @@
-var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
-$(document).ready(function(){
-    $('.resultBtn').click(function(){
-        $(this).text('Loading...');
-        $(this).attr('disabled', 'disabled')
-        var request = scriptURL + '?action=result' 
-        $.getJSON( request, function( data ) {
-            return data;
-        }).done(function(data){
-            $('.resultBtn').hide();
-            
-            data = data.sort(function(a,b){
-               return ( parseInt(a[2]) > parseInt(b[2]) ) ? -1 : 1;
-            });
-            data.forEach( function(row , index){
-                $('.resultTable tbody').append(
-                    `<tr>
-                        <th scope="row">${index+1}</th>
-                        <td>${row[1]}</td>
-                        <td>${row[2]}</td>
-                    </tr>`
-                );
-            });
-            $('table').fadeIn(400);    
-        });
-    });
-    function getItem( type = 0 ){
-        switch(type){
-            case 1:
-                return JSON.parse(localStorage.getItem('quiz'));
+const resultAnalysis = document.getElementById('result-analysis')
+const retakeQuizContainer = document.getElementById('retake-quiz-container')
+const loadingContainer = document.getElementById('loading-container')
 
-            case 3:
-                if(localStorage.getItem('userAnswer')){
-                    return JSON.parse(localStorage.getItem('userAnswer'));
-                }else{
-                    localStorage.setItem('userAnswer', '[""]')
-                    return JSON.parse(localStorage.getItem('userAnswer'));
-                }
-                    
-                
-            default:
-                return false;   
+resultInit();
+
+function resultInit() {
+    let _questionsAnswers, _localAnswer;
+    _questionsAnswers = JSON.parse(localStorage.getItem('quiz'));
+    _localAnswer = JSON.parse(localStorage.getItem('selectedAnswers'));
+    console.log(_localAnswer)
+    if( ( _questionsAnswers.length ) && (_localAnswer.length ) ){
+        resultAnalysis.innerHTML = generateResultMarkup(_questionsAnswers, _localAnswer);
+        resultAnalysis.classList.remove('d-none');
+        loadingContainer.classList.add('d-none');
+    } else {
+        loadingContainer.classList.add('d-none');
+        retakeQuizContainer.classList.remove('d-none');
+    }
+}
+
+function generateResultMarkup(_questionsAnswers, _localAnswer){
+    _questionsAnswers = JSON.parse(_questionsAnswers);
+    let _returnHtml;
+    _returnHtml = `<tr><td>SR. No</td><td>Question</td><td>Right Answer</td><td>Your Answer</td></tr>`;
+    _questionsAnswers.map( function( answers, index ){
+        let isCorrect = false;
+        if( 'answer'+answers.RightAnswer ==  _localAnswer[index] ){
+            isCorrect = true;
         }
-    }
+       _returnHtml+= `<tr class="${ isCorrect ? 'table-success' : 'table-danger' }"><td>${index + 1}</td><td>${answers.question}</td><td>${answers['answer'+answers.RightAnswer]}</td><td>${answers[_localAnswer[index]]}</td></tr>`
+    });
+    return _returnHtml;
+    
+}
 
-    var quiz = getItem(1);
-    var userAnswer = getItem(3);
-
-    console.log(quiz)
-    if(userAnswer.length>1){    
-        $('.scoreTable').show();
-        quiz.forEach(function(value, index){
-            $('.scoreTable tbody').append(
-                `<tr>
-                    <th scope="row">${index+1}</th>
-                    <td>${value.question}</td>
-                    <td>${value["answer".concat(value.RightAnswer)]  }</td>
-                    <td>${value["answer".concat(userAnswer[index])] }</td>
-                </tr>`
-            );
-        });
-    }else{
-        alert("Please Attempt the Quiz to See results..")
-    }
-
-});
+// resultAnalysis.innerHTML = 

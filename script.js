@@ -1,227 +1,123 @@
 var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
 
+/**
+ * Initializations
+ */
+var startBtn =  document.getElementById('js-start-quiz');
+var quizContainer = document.getElementById('quiz-container');
+var startContainer = document.getElementById('start-container');
+var loadingContainer = document.getElementById('loading-container');
+var resultContainer = document.getElementById('result-container');
+var question = document.getElementById('question');
+var answers = document.getElementById('answers');
+var questionIndex = document.getElementById('question-index');
+var questionsAnswers;
 
-function authUser (){
-    (localStorage.getItem('login') == 'undefined') && (localStorage.setItem('login', '0')) ;
-    (localStorage.getItem('login') == '0') && (window.location.href = '/login/');   
+/**
+ * Adding Event Listners
+ */
+answersElement = Array.from(document.querySelectorAll('#answers a')).map(function(element){
+    element.addEventListener('click', setNextQuestion);
+}); 
+startBtn.addEventListener('click',startQuiz);
+
+function startQuiz(){
+    startContainer.classList.toggle('d-none');
+    loadingContainer.classList.toggle('d-none');
+    localStorage.setItem('selectedAnswers',JSON.stringify([]));
+    fetchQuizQuestions();
 }
-authUser();
-$(document).ready(function(){
-    //Prevent submit to form of user
-    // $('#quiz-form').submit(function(e){
-    //     e.preventDefault();        
-    // });
 
-    /**           
-     * @param {type} type number
-     * @param {data} data JSON
-     */
-    function setItem( type , data ){
-        switch(type){
-            case 1:
-                localStorage.setItem('quiz', JSON.stringify(data));
-                return true;
-
-            case 2:
-                if(localStorage.getItem('questionIndex')){
-                    localStorage.setItem('questionIndex', data);
-                    return true;
-                }else{
-                    localStorage.setItem('questionIndex', '0')
-                    return true;
-                }    
-                case 3:
-                    if(localStorage.getItem('userAnswer')){
-                        localStorage.setItem('userAnswer', JSON.stringify(data));
-                        return true;
-                    }else{
-                        localStorage.setItem('userAnswer', '[""]')
-                        return true;
-                    }    
-            default:
-                return false;
-        }
-    }
-    function getItem( type = 0 ){
-        switch(type){
-            case 1:
-                return JSON.parse(localStorage.getItem('quiz'));
-
-            case 2:
-                if(localStorage.getItem('questionIndex')){
-                    return parseInt(localStorage.getItem('questionIndex'));
-                }else{
-                    localStorage.setItem('questionIndex', '0')
-                    return parseInt(localStorage.getItem('questionIndex'));
-                }
-            case 3:
-                if(localStorage.getItem('userAnswer')){
-                    return JSON.parse(localStorage.getItem('userAnswer'));
-                }else{
-                    localStorage.setItem('userAnswer', '[""]')
-                    return JSON.parse(localStorage.getItem('userAnswer'));
-                }
-                
-            case 4:
-                if(localStorage.getItem('token')){
-                    return localStorage.getItem('token');
-                }else{
-                    localStorage.setItem('token', '')
-                    return localStorage.getItem('token');
-                }    
-                
-            default:
-                return false;   
-        }
-    }
-
-    function removeItem( type ){
-        switch (type) {
-            case 1:
-                return localStorage.removeItem('quiz');
-
-            case 2:
-                localStorage.removeItem('questionIndex');
-                break;
-        
-            default:
-                break;
-        }
-    }
-    
-    function increaseAnsIndex(questionIndex){
-        var quiz = getItem(1);
-        if(!(questionIndex+1 >= quiz.length) ){
-            questionIndex++;
-            setItem(2,questionIndex); 
-            return questionIndex;  
-        }
-        return false;
-    }
-
+function fetchQuizQuestions(){
     /**
-     *  Common Function  For send data via ajax.
-     *  Send the data To doPost() appScript.
+     * TODO : remove this script
      */
-    function qfsSendData( data = {} ) {
-        $.ajax({
-            type: "POST",
-            url: scriptURL,
-            data: data,
-            headers: {
-                'Content-type': 'application/x-www-form-urlencoded',
-            },
-            success: function (data)
-            {
-                alert(data);
-            }
-        });
+    let demo = 'https://script.google.com/macros/s/AKfycbwjVmNYDngcqo0a2nyRzBeg-_rZYM05umGc5LEU6o7G/dev?callback=showQuestion';
+
+    quiz = JSON.parse(localStorage.getItem('quiz'));
+
+    if(quiz) {
+        showQuestion(quiz);
+        return;
     }
 
-    /**
-     * Show the result After Quiz answer done.
-     * get the data from Local Storage
-     */
+    var request = jQuery.ajax({
+        crossDomain: true,
+        url: demo,
+        method: "GET",
+        dataType: "jsonp",
+        success : function( e ){
+            //console.log(e);
+        },
+        error: function( xhr,e ){
+            console.log(e);
+        },
+    });
+}
 
-    function ShowResult(){
-        var rightAnswer = [];
-        var quiz = getItem(1);
-        quiz.map(function(value){
-            rightAnswer.push(value.RightAnswer);
-        });
-        var totalScore = 0;
-        let userAnswers = getItem(3);
-        rightAnswer.map(function(answer, key){
-            if(answer == userAnswers[key]){
-                totalScore++;
-            }
-        });
-        percentage =  ((totalScore / rightAnswer.length)*100).toFixed(2) ;
-
-        $(".quiz-body").hide();
-        $("#score").show();
-
-        $("#score h3").text(`Your Total Score is: ${totalScore} out of ${rightAnswer.length} and ${percentage}%`);
-
-        $(".restart-quiz").on('click', function(){
-            $(this).prop('value', 'Loading Your quiz .....')
-            removeItem(2);
-            removeItem(1);
-            var questionIndex = getItem(2);
-            getQuiz();
-            quizSetup(questionIndex);
-            $(".quiz-body").show();
-            $("#score").hide();
-        });
-
-        qfsSendData({ 
-            score: totalScore,
-            action: 'result',
-            token: getItem(4),
-        }); // send data to the s
-    }
-
-    function quizSetup(questionIndex){
-        var quiz = getItem(1);
-        $("#quiz-form input[type=radio]").prop("checked",false);
-        $("#question").text( quiz[questionIndex].question );
-        $("label[for='radio1'] span").text(quiz[questionIndex].answer1);
-        $("label[for='radio2'] span").text(quiz[questionIndex].answer2);
-        $("label[for='radio3'] span").text(quiz[questionIndex].answer3);
-        $("label[for='radio4'] span").text(quiz[questionIndex].answer4);
-        
-        $('.ansBtn').val(questionIndex);
-    }
-
-    /* ---------------------------------------------------------------------------- */
-    if (typeof(Storage) !== "undefined") {
-
-        // NOTE : Remove this if condiotion if found it is for testing purpose
-        function getQuiz(){
-            if(!getItem(1)){
-                $.ajaxSetup({
-                    async: false
-                });
-                $.getJSON( scriptURL+"?action=getquiz", function( data ) {
-                    setItem(1, data);
-                    return data;
-                });
-            }
-        }
-        getQuiz();
-        
-        
+function setNextQuestion(event){
+    let currentQuestionIndex = parseInt(questionIndex.innerHTML);
+    let selectedAnswer = event.target.id;
+    if( (questionsAnswers.length) > (currentQuestionIndex) ){
+        saveAnswer(selectedAnswer);
+        setQuestion(currentQuestionIndex);
     } else {
-    // Sorry! No Web Storage support..
+        saveAnswer(selectedAnswer);
+        showResult();
     }
+}
 
-    getItem(1);
-    $("#start-btn").click(function(e){
-        $('#rules').hide();
-        $(".quiz-body").show();
-        var questionIndex = getItem(2);
-        var userAnswer = getItem(3);
-        if(userAnswer.length == (questionIndex+1)){
-            ShowResult();
-        }else{
-            quizSetup(questionIndex);
+function setQuestion(index){
+    let currentQuestion = questionsAnswers[index];
+    questionIndex.innerHTML = ++index;
+    question.innerHTML = currentQuestion.question;
+    document.getElementById('answer1').innerHTML = currentQuestion.answer1;
+    document.getElementById('answer2').innerHTML = currentQuestion.answer2;
+    document.getElementById('answer3').innerHTML = currentQuestion.answer3;
+    document.getElementById('answer4').innerHTML = currentQuestion.answer4;
+
+    loadingContainer.classList.add('d-none');
+    quizContainer.classList.remove('d-none');
+}
+
+function showQuestion(questions){
+    /**
+     * Internal Cachig for development
+     */
+    localStorage.setItem('quiz', JSON.stringify(questions));
+    /*** */
+    questionsAnswers = JSON.parse(questions);
+    setQuestion(0);
+}
+
+function showResult(){
+    quizContainer.classList.add('d-none');
+    let result = document.querySelector('#result-container #result');
+    let _calculatedScore = calculateResults();
+
+    result.innerHTML = _calculatedScore;
+    resultContainer.classList.remove('d-none');
+}
+
+function calculateResults(){
+    let _questionsAnswers = questionsAnswers;
+    let _rightAnswers = 0;
+    let _localAnswer = JSON.parse(localStorage.getItem('selectedAnswers'));
+    _questionsAnswers.map( function( answers, index ){
+        if( 'answer'+answers.RightAnswer ==  _localAnswer[index] ){
+            _rightAnswers++;
         }
     });
+    return _rightAnswers+' / '+_questionsAnswers.length ;
+}
 
-    $('#quiz-form').submit(function(e){
-        e.preventDefault();   
-        if($("#quiz-form input[type=radio]:checked").length == 0){
-            alert('Select The Value Please');
-        }else{
-            var questionIndex = getItem(2);
-            var userAnswer = getItem(3);
-            userAnswer[questionIndex] = (parseInt($('input[name="optradio"]:checked').val()));
-            setItem( 3, userAnswer);
-            if(questionIndex = increaseAnsIndex(questionIndex)){
-                quizSetup(questionIndex);
-            }else{
-                ShowResult();
-            }
-        }     
-    });
-});
+function saveAnswer(selectedAnswer){
+    let localAnswer;
+    if( ! localStorage.getItem('selectedAnswers') ){
+        localAnswer = [];
+    } else {
+        localAnswer = JSON.parse(localStorage.getItem('selectedAnswers'));
+    }
+    localAnswer.push(selectedAnswer);
+    localStorage.setItem('selectedAnswers',JSON.stringify(localAnswer));
+}
