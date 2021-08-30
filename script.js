@@ -32,7 +32,7 @@ function fetchQuizQuestions(){
     /**
      * TODO : remove this script
      */
-    let demo = 'https://script.google.com/macros/s/AKfycbwjVmNYDngcqo0a2nyRzBeg-_rZYM05umGc5LEU6o7G/dev?callback=showQuestion';
+    let demo = 'https://script.google.com/macros/s/AKfycby9VLNfV3on-KZWrqepodridbJme8en1rpSLlxaXTB1YMourUE01PWA62lhobp4M5cOJg/exec?callback=showQuestion';
 
     quiz = JSON.parse(localStorage.getItem('quiz'));
 
