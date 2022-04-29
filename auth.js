@@ -1,6 +1,13 @@
+// Put this at the top of index page
+if ( ! (document.cookie.indexOf("CrewCentreSession=Valid")  == -1) ) {
+    location.href = "../index.html";
+}
+
+var quizeStore = localStorage;
+
 var handleRequest = function(user, type){
     var ajaxRequest = function(user){
-        var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
+        var scriptURL = "https://script.google.com/macros/s/AKfycbzWYAAR3CBhyAS1PDf7LThjNPYfwHrLjYTZWU05Vqz10LQAB2MpDUbNeiR0NDkX5D4kLw/exec";
         // user = { data : user };
         $.ajax({
             type: "POST",
@@ -19,23 +26,27 @@ var handleRequest = function(user, type){
             {
                 switch(type){
                     case 'login':
-                        (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
-                        (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
+                        (quizeStore.getItem('login') == 'undefined') ? quizeStore.setItem('login', '0') : '';
+                        (quizeStore.getItem('token') == 'undefined') ? quizeStore.setItem('token', '') : '';
                         if(data[type]){
-                            localStorage.setItem('login', '1');
-                            data.token.length && localStorage.setItem('token', data.token);
+                            quizeStore.setItem('login', '1');
+                            data.token.length && quizeStore.setItem('token', data.token);
+                            var sessionTimeout = 1; //hours
+                            var loginDuration = new Date();
+                            loginDuration.setTime(loginDuration.getTime()+(sessionTimeout*60*60*1000));
+                            document.cookie = "CrewCentreSession=Valid; "+loginDuration.toGMTString()+"; path=/";
                         }
                         alert(data.result);
                         return data;
 
                         break;
                     case 'signup':  
-                        (localStorage.getItem('login') == 'undefined') ? localStorage.setItem('login', '0') : '';
-                        (localStorage.getItem('token') == 'undefined') ? localStorage.setItem('token', '') : '';
+                        (quizeStore.getItem('login') == 'undefined') ? quizeStore.setItem('login', '0') : '';
+                        (quizeStore.getItem('token') == 'undefined') ? quizeStore.setItem('token', '') : '';
                         console.log(data[type]);
                         if(data[type]){
-                            data.token.length && localStorage.setItem('token', data.token);
-                            (localStorage.getItem('login') == '0') && (window.location.href = '../');
+                            data.token.length && quizeStore.setItem('token', data.token);
+                            (quizeStore.getItem('login') == '0') && (window.location.href = '../');
                         }
                         alert(data.result);
                         return data;
