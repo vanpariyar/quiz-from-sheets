@@ -1,4 +1,4 @@
-var scriptURL = "https://script.google.com/macros/s/AKfycbyCxnTylZQBaf1DhaWvjF1g8FMlP_315wTIWRwbHBF8yMio56Fe/exec";
+var scriptURL = "https://script.google.com/macros/s/AKfycbzWYAAR3CBhyAS1PDf7LThjNPYfwHrLjYTZWU05Vqz10LQAB2MpDUbNeiR0NDkX5D4kLw/exec";
 
 /**
  * Initializations
@@ -12,6 +12,7 @@ var question = document.getElementById('question');
 var answers = document.getElementById('answers');
 var questionIndex = document.getElementById('question-index');
 var questionsAnswers;
+var quizeStore = localStorage;
 
 /**
  * Adding Event Listners
@@ -24,7 +25,7 @@ startBtn.addEventListener('click',startQuiz);
 function startQuiz(){
     startContainer.classList.toggle('d-none');
     loadingContainer.classList.toggle('d-none');
-    localStorage.setItem('selectedAnswers',JSON.stringify([]));
+    quizeStore.setItem('selectedAnswers',JSON.stringify([]));
     fetchQuizQuestions();
 }
 
@@ -32,9 +33,9 @@ function fetchQuizQuestions(){
     /**
      * TODO : remove this script
      */
-    let demo = 'https://script.google.com/macros/s/AKfycby9VLNfV3on-KZWrqepodridbJme8en1rpSLlxaXTB1YMourUE01PWA62lhobp4M5cOJg/exec?callback=showQuestion';
+    let demo = scriptURL+'?callback=showQuestion';
 
-    quiz = JSON.parse(localStorage.getItem('quiz'));
+    quiz = JSON.parse(quizeStore.getItem('quiz'));
 
     if(quiz) {
         showQuestion(quiz);
@@ -84,7 +85,7 @@ function showQuestion(questions){
     /**
      * Internal Cachig for development
      */
-    localStorage.setItem('quiz', JSON.stringify(questions));
+    quizeStore.setItem('quiz', JSON.stringify(questions));
     /*** */
     questionsAnswers = JSON.parse(questions);
     setQuestion(0);
@@ -97,27 +98,80 @@ function showResult(){
 
     result.innerHTML = _calculatedScore;
     resultContainer.classList.remove('d-none');
+
+    sendResultToDatabase();
 }
 
 function calculateResults(){
     let _questionsAnswers = questionsAnswers;
+    let _rightAnswers = getTotalScore();
+    return _rightAnswers+' / '+_questionsAnswers.length ;
+}
+
+function getTotalScore() {
+    let _questionsAnswers = questionsAnswers;
     let _rightAnswers = 0;
-    let _localAnswer = JSON.parse(localStorage.getItem('selectedAnswers'));
+    let _localAnswer = JSON.parse(quizeStore.getItem('selectedAnswers'));
     _questionsAnswers.map( function( answers, index ){
         if( 'answer'+answers.RightAnswer ==  _localAnswer[index] ){
             _rightAnswers++;
         }
     });
-    return _rightAnswers+' / '+_questionsAnswers.length ;
+    return _rightAnswers;
 }
 
 function saveAnswer(selectedAnswer){
     let localAnswer;
-    if( ! localStorage.getItem('selectedAnswers') ){
+    if( ! quizeStore.getItem('selectedAnswers') ){
         localAnswer = [];
     } else {
-        localAnswer = JSON.parse(localStorage.getItem('selectedAnswers'));
+        localAnswer = JSON.parse(quizeStore.getItem('selectedAnswers'));
     }
     localAnswer.push(selectedAnswer);
-    localStorage.setItem('selectedAnswers',JSON.stringify(localAnswer));
+    quizeStore.setItem('selectedAnswers',JSON.stringify(localAnswer));
 }
+
+function sendResultToDatabase(){
+    let userToken = quizeStore.getItem('token');
+    const sendObject = {
+        'token': userToken,
+        'action': 'result',
+        'score': getTotalScore(),
+    }
+
+    console.log(sendObject);
+
+    sendResultToGoogleSheet(sendObject)
+} 
+
+function sendResultToGoogleSheet(formData) {
+    // var form_data = new FormData();
+
+    // for ( var key in formData ) {
+    //     form_data.append(key, formData[key]);
+    // }
+    let ajaxRequest = function(formData){
+        // user = { data : user };
+        $.ajax({
+            type: "POST",
+            url: scriptURL,
+            async: true,
+            data: formData,
+            headers: {
+                // 'Content-Type': 'text/plain;charset=utf-8',
+                'Content-type': 'application/x-www-form-urlencoded',
+                // 'Content-type': 'application/json',
+            },
+            beforeSuccess: function(){
+                setTimeout(function(){ alert("Hello"); }, 5000);
+            },
+            success: function (data)
+            {
+              
+                        console.log('Case default')
+                console.log(data);
+            }
+        });
+    } 
+    ajaxRequest(formData);
+  }

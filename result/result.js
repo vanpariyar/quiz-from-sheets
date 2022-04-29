@@ -1,13 +1,14 @@
 const resultAnalysis = document.getElementById('result-analysis')
 const retakeQuizContainer = document.getElementById('retake-quiz-container')
 const loadingContainer = document.getElementById('loading-container')
+var quizeStore = localStorage;
 
 resultInit();
 
 function resultInit() {
     let _questionsAnswers, _localAnswer;
-    _questionsAnswers = JSON.parse(localStorage.getItem('quiz'));
-    _localAnswer = JSON.parse(localStorage.getItem('selectedAnswers'));
+    _questionsAnswers = JSON.parse(quizeStore.getItem('quiz'));
+    _localAnswer = JSON.parse(quizeStore.getItem('selectedAnswers'));
     console.log(_localAnswer)
     if( ( _questionsAnswers.length ) && (_localAnswer.length ) ){
         resultAnalysis.innerHTML = generateResultMarkup(_questionsAnswers, _localAnswer);
@@ -17,6 +18,8 @@ function resultInit() {
         loadingContainer.classList.add('d-none');
         retakeQuizContainer.classList.remove('d-none');
     }
+
+    resetQuizQuestion();
 }
 
 function generateResultMarkup(_questionsAnswers, _localAnswer){
@@ -32,6 +35,10 @@ function generateResultMarkup(_questionsAnswers, _localAnswer){
     });
     return _returnHtml;
     
+}
+
+function resetQuizQuestion(){
+    quizeStore.removeItem('quiz')
 }
 
 // resultAnalysis.innerHTML = 
