@@ -121,10 +121,14 @@ function onSignIn(googleUser) {
 function gsignin(response) {
     // decodeJwtResponse() is a custom function defined by you
     // to decode the credential response.
-    function decodeJwtResponse(token) {
-        let body = token.split('.')[1];
-        let decoded = Utilities.newBlob(Utilities.base64Decode(body)).getDataAsString();
-        return JSON.parse(decoded);
+    function decodeJwtResponse (token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    
+        return JSON.parse(jsonPayload);
     };
     const responsePayload = decodeJwtResponse(response.credential);
 
