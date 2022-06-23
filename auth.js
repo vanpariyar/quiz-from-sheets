@@ -160,7 +160,7 @@ function gsignin(response) {
     console.log("Image URL: " + responsePayload.picture);
     console.log("Email: " + responsePayload.email);
 
-    console.log(user);
+    
 
     let user = {
         name: responsePayload.name,
@@ -169,5 +169,6 @@ function gsignin(response) {
         action: 'googlesignin',
     } 
 
+    console.log(user);
     handleRequest(user, 'googlesignin');
  }
