@@ -121,6 +121,11 @@ function onSignIn(googleUser) {
 function gsignin(response) {
     // decodeJwtResponse() is a custom function defined by you
     // to decode the credential response.
+    function decodeJwtResponse(token) {
+        let body = token.split('.')[1];
+        let decoded = Utilities.newBlob(Utilities.base64Decode(body)).getDataAsString();
+        return JSON.parse(decoded);
+    };
     const responsePayload = decodeJwtResponse(response.credential);
 
     console.log("ID: " + responsePayload.sub);
