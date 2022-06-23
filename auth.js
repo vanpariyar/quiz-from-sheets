@@ -7,7 +7,7 @@ var quizeStore = localStorage;
 
 var handleRequest = function(user, type){
     var ajaxRequest = function(user){
-        var scriptURL = "https://script.google.com/macros/s/AKfycbxQT9PVEaz6pVFcgAEnHUupuHykBZ08vxZhgDHijzOIn-O5qQDENqgNm3BmyRhNeowl/exec";
+        var scriptURL = "https://script.google.com/macros/s/AKfycbyArVYApqGm4fM5cQM6J25occixb7byWRy9nr04ndPqhQcUAHxbYSEBqjN-BnxINF3B/exec";
         // user = { data : user };
         $.ajax({
             type: "POST",
@@ -41,6 +41,7 @@ var handleRequest = function(user, type){
                         return data;
 
                         break;
+                        
                     case 'signup':  
                         (quizeStore.getItem('login') == 'undefined') ? quizeStore.setItem('login', '0') : '';
                         (quizeStore.getItem('token') == 'undefined') ? quizeStore.setItem('token', '') : '';
@@ -49,6 +50,25 @@ var handleRequest = function(user, type){
                             data.token.length && quizeStore.setItem('token', data.token);
                             (quizeStore.getItem('login') == '0') && (window.location.href = '../');
                         }
+                        alert(data.result);
+                        return data;
+        
+                        break;
+                    
+                    case 'googlesignin':  
+                        (quizeStore.getItem('login') == 'undefined') ? quizeStore.setItem('login', '0') : '';
+                        (quizeStore.getItem('token') == 'undefined') ? quizeStore.setItem('token', '') : '';
+                        console.log(data[type]);
+                        if(data[type]){
+                            quizeStore.setItem('login', '1');
+                            data.token.length && quizeStore.setItem('token', data.token);
+                            var sessionTimeout = 1; //hours
+                            var loginDuration = new Date();
+                            loginDuration.setTime(loginDuration.getTime()+(sessionTimeout*60*60*1000));
+                            document.cookie = "CrewCentreSession=Valid; "+loginDuration.toGMTString()+"; path=/";
+                        }
+                        alert(data.result);
+                        window.location.href = '../';
                         alert(data.result);
                         return data;
         
@@ -130,6 +150,7 @@ function gsignin(response) {
     
         return JSON.parse(jsonPayload);
     };
+
     const responsePayload = decodeJwtResponse(response.credential);
 
     console.log("ID: " + responsePayload.sub);
@@ -141,5 +162,12 @@ function gsignin(response) {
 
     console.log(user);
 
-    handleRequest(user, 'login');
+    let user = {
+        name: responsePayload.name,
+        email: responsePayload.email,
+        id: responsePayload.sub,
+        action: 'googlesignin',
+    } 
+
+    handleRequest(user, 'googlesignin');
  }
