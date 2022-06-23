@@ -1,4 +1,4 @@
-var scriptURL = "https://script.google.com/macros/s/AKfycbzWYAAR3CBhyAS1PDf7LThjNPYfwHrLjYTZWU05Vqz10LQAB2MpDUbNeiR0NDkX5D4kLw/exec";
+var scriptURL = "https://script.google.com/macros/s/AKfycbxQT9PVEaz6pVFcgAEnHUupuHykBZ08vxZhgDHijzOIn-O5qQDENqgNm3BmyRhNeowl/exec";
 
 /**
  * Initializations
@@ -12,20 +12,23 @@ var question = document.getElementById('question');
 var answers = document.getElementById('answers');
 var questionIndex = document.getElementById('question-index');
 var questionsAnswers;
-var quizeStore = localStorage;
-
+var quizStore = localStorage;
+var answer1 = document.getElementById('answer1');
+var answer2 = document.getElementById('answer2');
+var answer3 = document.getElementById('answer3');
+var answer4 = document.getElementById('answer4');
 /**
  * Adding Event Listners
  */
 answersElement = Array.from(document.querySelectorAll('#answers a')).map(function(element){
-    element.addEventListener('click', setNextQuestion);
+    element.addEventListener('click', isASelectedAnswerIsRight);
 }); 
 startBtn.addEventListener('click',startQuiz);
 
 function startQuiz(){
     startContainer.classList.toggle('d-none');
     loadingContainer.classList.toggle('d-none');
-    quizeStore.setItem('selectedAnswers',JSON.stringify([]));
+    quizStore.setItem('selectedAnswers',JSON.stringify([]));
     fetchQuizQuestions();
 }
 
@@ -35,7 +38,7 @@ function fetchQuizQuestions(){
      */
     let demo = scriptURL+'?callback=showQuestion';
 
-    quiz = JSON.parse(quizeStore.getItem('quiz'));
+    quiz = JSON.parse(quizStore.getItem('quiz'));
 
     if(quiz) {
         showQuestion(quiz);
@@ -56,6 +59,18 @@ function fetchQuizQuestions(){
     });
 }
 
+function isASelectedAnswerIsRight( event ) {
+    thisAnswer = this;
+    thisAnswer.removeEventListener('click', isASelectedAnswerIsRight);
+
+    event.target.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="sr-only">Next Question in 3 Second </span></div></div>';
+
+    setTimeout( function(){
+        setNextQuestion(event);
+        this.addEventListener('click', isASelectedAnswerIsRight);
+    },1800 );
+}
+
 function setNextQuestion(event){
     let currentQuestionIndex = parseInt(questionIndex.innerHTML);
     let selectedAnswer = event.target.id;
@@ -72,10 +87,10 @@ function setQuestion(index){
     let currentQuestion = questionsAnswers[index];
     questionIndex.innerHTML = ++index;
     question.innerHTML = currentQuestion.question;
-    document.getElementById('answer1').innerHTML = currentQuestion.answer1;
-    document.getElementById('answer2').innerHTML = currentQuestion.answer2;
-    document.getElementById('answer3').innerHTML = currentQuestion.answer3;
-    document.getElementById('answer4').innerHTML = currentQuestion.answer4;
+    answer1.innerHTML = currentQuestion.answer1;
+    answer2.innerHTML = currentQuestion.answer2;
+    answer3.innerHTML = currentQuestion.answer3;
+    answer4.innerHTML = currentQuestion.answer4;
 
     loadingContainer.classList.add('d-none');
     quizContainer.classList.remove('d-none');
@@ -85,7 +100,7 @@ function showQuestion(questions){
     /**
      * Internal Cachig for development
      */
-    quizeStore.setItem('quiz', JSON.stringify(questions));
+    quizStore.setItem('quiz', JSON.stringify(questions));
     /*** */
     questionsAnswers = JSON.parse(questions);
     setQuestion(0);
@@ -111,7 +126,7 @@ function calculateResults(){
 function getTotalScore() {
     let _questionsAnswers = questionsAnswers;
     let _rightAnswers = 0;
-    let _localAnswer = JSON.parse(quizeStore.getItem('selectedAnswers'));
+    let _localAnswer = JSON.parse(quizStore.getItem('selectedAnswers'));
     _questionsAnswers.map( function( answers, index ){
         if( 'answer'+answers.RightAnswer ==  _localAnswer[index] ){
             _rightAnswers++;
@@ -122,17 +137,17 @@ function getTotalScore() {
 
 function saveAnswer(selectedAnswer){
     let localAnswer;
-    if( ! quizeStore.getItem('selectedAnswers') ){
+    if( ! quizStore.getItem('selectedAnswers') ){
         localAnswer = [];
     } else {
-        localAnswer = JSON.parse(quizeStore.getItem('selectedAnswers'));
+        localAnswer = JSON.parse(quizStore.getItem('selectedAnswers'));
     }
     localAnswer.push(selectedAnswer);
-    quizeStore.setItem('selectedAnswers',JSON.stringify(localAnswer));
+    quizStore.setItem('selectedAnswers',JSON.stringify(localAnswer));
 }
 
 function sendResultToDatabase(){
-    let userToken = quizeStore.getItem('token');
+    let userToken = quizStore.getItem('token');
     const sendObject = {
         'token': userToken,
         'action': 'result',
@@ -174,4 +189,4 @@ function sendResultToGoogleSheet(formData) {
         });
     } 
     ajaxRequest(formData);
-  }
+}

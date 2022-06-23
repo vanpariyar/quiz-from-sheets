@@ -7,7 +7,7 @@ var quizeStore = localStorage;
 
 var handleRequest = function(user, type){
     var ajaxRequest = function(user){
-        var scriptURL = "https://script.google.com/macros/s/AKfycbzWYAAR3CBhyAS1PDf7LThjNPYfwHrLjYTZWU05Vqz10LQAB2MpDUbNeiR0NDkX5D4kLw/exec";
+        var scriptURL = "https://script.google.com/macros/s/AKfycbxQT9PVEaz6pVFcgAEnHUupuHykBZ08vxZhgDHijzOIn-O5qQDENqgNm3BmyRhNeowl/exec";
         // user = { data : user };
         $.ajax({
             type: "POST",
@@ -37,6 +37,7 @@ var handleRequest = function(user, type){
                             document.cookie = "CrewCentreSession=Valid; "+loginDuration.toGMTString()+"; path=/";
                         }
                         alert(data.result);
+                        window.location.href = '../';
                         return data;
 
                         break;

@@ -4,8 +4,6 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="609975617211-rjm830vk3rcbafqtdmd6gsa7alc87dtg.apps.googleusercontent.com">
 	<title>Satsang Sabha Quiz</title>
 	<link href="https://fonts.googleapis.com/css?family=Signika&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -13,7 +11,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="../style.css">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 </head>
 <body>
@@ -79,6 +77,21 @@
                             </div> -->
                             <button type="submit" class="btn form-submit btn-primary">Sign In</button>                            
 						  </form>
+
+						  <div id="g_id_onload"
+							 data-client_id="609975617211-fb3d2a9i0h8b31e2n60hn5c7f1p91g7i.apps.googleusercontent.com"
+							 data-login_uri="https://your.domain/your_login_endpoint"
+							 data-auto_prompt="false">
+						  </div>
+						  
+						  <div class="g_id_signin"
+							 data-type="standard"
+							 data-size="large"
+							 data-theme="outline"
+							 data-text="sign_in_with"
+							 data-shape="rectangular"
+							 data-logo_alignment="left">
+						  </div>
 						  <!-- <h5 class="mx-auto ">Google Easy SignIn</h5> -->
                             <!-- <div class="text-center">	
 								<p class="mt-1">OR</p>

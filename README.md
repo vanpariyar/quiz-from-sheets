@@ -9,7 +9,7 @@ we are developing the quiz which fetches the questions from the google sheets an
 
 ### Demo URL :point_right: -> https://vanpariyar.github.io/quiz-from-sheets :octocat:
 
-see Sheets -> https://docs.google.com/spreadsheets/d/1hioz7VjnRoF47XBgL1ZyocTFqnEgqzVHNcjmVd2vE68/
+see Sheets -> https://docs.google.com/spreadsheets/d/1ymL1MLrtH_DJWC_NbIcoghDm7Ev5C_1Vhp_3Hb7cL7M/
 
 To use this application you can clone and download this repo.
 
@@ -19,7 +19,7 @@ To use this application you can clone and download this repo.
 
 Click to copy this link: :point_down:	
 
-https://docs.google.com/spreadsheets/d/1hioz7VjnRoF47XBgL1ZyocTFqnEgqzVHNcjmVd2vE68/copy
+https://docs.google.com/spreadsheets/d/1ymL1MLrtH_DJWC_NbIcoghDm7Ev5C_1Vhp_3Hb7cL7M/copy
 
 #### Step :two:
 

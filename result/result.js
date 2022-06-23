@@ -10,7 +10,7 @@ function resultInit() {
     _questionsAnswers = JSON.parse(quizeStore.getItem('quiz'));
     _localAnswer = JSON.parse(quizeStore.getItem('selectedAnswers'));
     console.log(_localAnswer)
-    if( ( _questionsAnswers.length ) && (_localAnswer.length ) ){
+    if( _questionsAnswers && _localAnswer && ( _questionsAnswers.length ) && (_localAnswer.length ) ){
         resultAnalysis.innerHTML = generateResultMarkup(_questionsAnswers, _localAnswer);
         resultAnalysis.classList.remove('d-none');
         loadingContainer.classList.add('d-none');
